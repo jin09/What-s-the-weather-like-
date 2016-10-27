@@ -59,6 +59,8 @@ public class ForecastFragment extends Fragment {
         if(id == R.id.action_refresh){
             Toast.makeText(getContext(),"refresh menu HIT", Toast.LENGTH_SHORT).show();
             Log.d(TAG,"refresh menu is HIT !!!!");
+            FetchWeatherTask task = new FetchWeatherTask();
+            task.execute();
             return true;
         }
 
