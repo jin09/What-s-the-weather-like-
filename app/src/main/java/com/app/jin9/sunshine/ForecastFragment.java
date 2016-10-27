@@ -316,5 +316,15 @@ public class ForecastFragment extends Fragment {
             // This will only happen if there was an error getting or parsing the forecast.
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            if(strings != null){
+                mForecastAdapter.clear();
+                for(String dayForecastStr : strings){
+                    mForecastAdapter.add(dayForecastStr);
+                }
+            }
+        }
     }
 }
