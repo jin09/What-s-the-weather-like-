@@ -4,6 +4,7 @@ package com.app.jin9.sunshine;
  * Created by gautam on 27-10-2016.
  */
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -60,7 +61,7 @@ public class ForecastFragment extends Fragment {
             Toast.makeText(getContext(),"refresh menu HIT", Toast.LENGTH_SHORT).show();
             Log.d(TAG,"refresh menu is HIT !!!!");
             FetchWeatherTask task = new FetchWeatherTask();
-            task.execute();
+            task.execute("1273294");
             return true;
         }
 
@@ -108,12 +109,12 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, Void>{
+    public class FetchWeatherTask extends AsyncTask<String, Void, Void>{
 
         private final String TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -122,12 +123,32 @@ public class ForecastFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
 
+            String format = "json";
+            String units = "metric";
+            int numDays = 17;
+            String KEY = "0337bf242796a06f25c6d68f7d2fdee4";
             try {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?id=1273294&" +
-                        "mode=json&units=metric&cnt=17&APPID=0337bf242796a06f25c6d68f7d2fdee4");
+                final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                final String ID = "id";
+                final String FORMAT_PARAM = "mode";
+                final String UNITS_PARAM = "units";
+                final String DAYS_PARAM = "cnt";
+                final String API_KEY_PARAM = "APPID";
+
+                Uri buildUri = Uri.parse(BASE_URL).buildUpon()
+                        .appendQueryParameter(ID,params[0])
+                        .appendQueryParameter(FORMAT_PARAM, format)
+                        .appendQueryParameter(UNITS_PARAM, units)
+                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                        .appendQueryParameter(API_KEY_PARAM, KEY)
+                        .build();
+
+                URL url = new URL(buildUri.toString());
+                Log.d(TAG, buildUri.toString());
+                //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?id=1273294&mode=json&units=metric&cnt=17&APPID=");
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -172,6 +193,7 @@ public class ForecastFragment extends Fragment {
                         Log.e(TAG, "Error closing stream", e);
                     }
                 }
+                Log.d(TAG,"JSON is : "+ forecastJsonStr);
             }
             return null;
         }
