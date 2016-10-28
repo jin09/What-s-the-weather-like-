@@ -104,4 +104,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_map">Map Location</string>
+    <string name="action_share">Share</string>
 </resources>
