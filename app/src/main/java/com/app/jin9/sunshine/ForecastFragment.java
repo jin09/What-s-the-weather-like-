@@ -5,9 +5,11 @@ package com.app.jin9.sunshine;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
@@ -70,7 +72,9 @@ public class ForecastFragment extends Fragment {
             Toast.makeText(getContext(),"refresh menu HIT", Toast.LENGTH_SHORT).show();
             Log.d(TAG,"refresh menu is HIT !!!!");
             FetchWeatherTask task = new FetchWeatherTask();
-            task.execute("1273294");
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String storedID = pref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+            task.execute(storedID);
             return true;
         }
 
