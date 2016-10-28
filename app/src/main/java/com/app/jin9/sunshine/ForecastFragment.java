@@ -4,6 +4,7 @@ package com.app.jin9.sunshine;
  * Created by gautam on 27-10-2016.
  */
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -118,6 +119,10 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(),"LIST ITEM CLICKED", Toast.LENGTH_SHORT).show();
+                String forecast = mForecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
             }
         });
         return rootView;
@@ -243,7 +248,7 @@ public class ForecastFragment extends Fragment {
 
             String format = "json";
             String units = "metric";
-            int numDays = 11;
+            int numDays = 8;
             String KEY = "0337bf242796a06f25c6d68f7d2fdee4";
             try {
                 // Construct the URL for the OpenWeatherMap query
