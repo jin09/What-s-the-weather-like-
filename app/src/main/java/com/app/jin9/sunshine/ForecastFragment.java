@@ -65,20 +65,30 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             Toast.makeText(getContext(),"refresh menu HIT", Toast.LENGTH_SHORT).show();
             Log.d(TAG,"refresh menu is HIT !!!!");
-            FetchWeatherTask task = new FetchWeatherTask();
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String storedID = pref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-            task.execute(storedID);
+            updateWeather();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateWeather(){
+        FetchWeatherTask task = new FetchWeatherTask();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String storedID = pref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        task.execute(storedID);
     }
 
     @Override
