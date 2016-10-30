@@ -15,7 +15,7 @@
     <string name="pref_location_key" translatable="false">location</string>
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
-    <string name="pref_location_default" translatable="false">1273294</string>
+    <string name="pref_location_default" translatable="false">94043</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
